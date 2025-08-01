@@ -1,0 +1,47 @@
+# Compiled scripts or binaries
+*.out
+*.o
+*.so
+*.exe
+*.bin
+
+# Logs and runtime files
+*.log
+*.pid
+*.swp
+*.tmp
+
+# Environment and secrets
+.env
+.env.*
+*.secret
+secrets/
+config.local.sh
+
+# System/Editor-specific files
+.DS_Store
+Thumbs.db
+*.bak
+*.~ 
+*.orig
+
+# macOS and Linux trash
+.Trashes
+*.Trash-*
+
+# Vim/Emacs/Sublime
+*~
+*.swp
+*.swo
+*.swn
+*.un~
+*.tmp
+*.sublime-workspace
+*.sublime-project
+
+# VS Code settings
+.vscode/
+
+# Bash history or shell session files
+.bash_history
+.bash_sessions/
