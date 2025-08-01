@@ -1,0 +1,50 @@
+#!/bin/bash
+
+COMPILER=$(echo "$1" | tr '[:upper:]' '[:lower:]')
+
+case "$COMPILER" in
+  apple|llvm)
+    if [[ "${BASH_SOURCE[0]}" != "${0}" ]]; then
+      if [[ "$(uname)" == "Darwin" ]]; then
+        echo "✅ macOS detected"
+        BINPATH="/opt/homebrew/opt/llvm/bin"
+
+        if [[ "$COMPILER" == "apple" ]]; then
+          if [[ ":$PATH:" == *":$BINPATH:"* ]]; then
+            export PATH=$(echo "$PATH" | awk -v RS=: -v ORS=: '$0 != "/opt/homebrew/opt/llvm/bin"' | sed 's/:$//')
+            export LDFLAGS=""      
+            export CPPFLAGS=""
+            echo "✅ Compiler changed to MacOS native."
+          else
+            
+            echo "❌ Compiler is already MacOS native."
+            #exit 1
+            
+          fi
+        elif [[ "$COMPILER" == "llvm" ]]; then
+          if [[ ":$PATH:" == *":$BINPATH:"* ]]; then
+            echo "❌ Compiler is already llvm"
+            #exit 1
+          else
+            export PATH="$BINPATH:$PATH"
+            export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"      
+            export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
+            echo "✅ Compiler changed to homebrew llvm."
+          fi
+          #exit 0
+        fi
+      else
+          echo "❌ OS not supported"
+          #exit 1
+      fi
+    else
+      echo "ERROR: Script must run inside the source command to work."
+      echo "Usage: source $0 [apple | llvm]"
+    fi
+    ;;
+  *)
+    echo "ERROR: Unknown argument: $1"
+    echo "Usage: source $0 [apple | llvm]"
+    #exit 1;
+    ;;
+esac
